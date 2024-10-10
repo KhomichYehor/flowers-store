@@ -1,8 +1,9 @@
-import { ParseIntPipe } from './../conception/pipes';
-import { Controller, Get, Query, UseGuards, UseInterceptors } from '@nestjs/common';
+
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { AuthGuard } from 'src/conception/guard';
 import { LoggingInteceptor } from 'src/conception/interceptor';
+import { CreateFlowersDto } from './flowers.dto';
 
 @Controller('flowers')
 @UseInterceptors(LoggingInteceptor)
@@ -11,8 +12,14 @@ export class FlowersController {
 
   @Get()
   @UseGuards(AuthGuard)
-  findAll(@Query('pageNumber', ParseIntPipe) pageNumber: number) {
-    console.log(pageNumber)
+  findAll() {
     return this.flowersService.findAll();
+  }
+
+  @Post()
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard)
+  create(@Body() dto: CreateFlowersDto) {
+    return this.flowersService.create(dto)
   }
 }

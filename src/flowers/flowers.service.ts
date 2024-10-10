@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Flower } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { CreateFlowersDto } from './flowers.dto';
 
 @Injectable()
 export class FlowersService {
-  constructor(private readonly prisma:PrismaService){}
-  findAll(){
-
-    return this.prisma.flower.findMany()
+  constructor(private readonly prisma: PrismaService) {}
+  findAll() {
+    return this.prisma.flower.findMany();
     /* return [
       {
         name: 'Rose',
@@ -25,5 +25,11 @@ export class FlowersService {
         price: 7,
       },
     ]; */
+  }
+
+  create(dto: CreateFlowersDto) {
+    return this.prisma.flower.create({
+      data:dto,
+    })
   }
 }
