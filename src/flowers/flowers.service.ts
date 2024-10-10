@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Flower } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class FlowersService {
-  findAll() {
-    return [
+  constructor(private readonly prisma:PrismaService){}
+  findAll(){
+
+    return this.prisma.flower.findMany()
+    /* return [
       {
         name: 'Rose',
         color: 'Red',
@@ -19,6 +24,6 @@ export class FlowersService {
         color: 'Yellow',
         price: 7,
       },
-    ];
+    ]; */
   }
 }
